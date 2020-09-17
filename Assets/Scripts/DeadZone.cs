@@ -8,13 +8,12 @@ public class DeadZone : MonoBehaviour
 {
     
     void OnTriggerEnter2D(Collider2D collider)
-    {
-        Debug.Log("쥬금");
-        
+    {   
         Player player = collider.transform.GetComponent<Player>();
 
         if (player != null)
         {
+            Debug.Log("쥬금");
             player.OnDead();
         }
     }
