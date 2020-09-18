@@ -7,8 +7,14 @@ public class Player : MonoBehaviour
 {
     public delegate void UpdateNumberInfoAction(int a);
     public UpdateNumberInfoAction UpdateHpAction;
+    public UpdateNumberInfoAction UpdateCoinAction;
 
     public int hp
+    {
+        get; private set;
+    }
+
+    public int coin
     {
         get; private set;
     }
@@ -35,6 +41,7 @@ public class Player : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
 
         UpdateHp(maxHp);
+        coin = 0;
         startPos = transform.position;
     }
 
@@ -72,6 +79,13 @@ public class Player : MonoBehaviour
         if (hp < 0) hp = 0;
 
         if (UpdateHpAction != null) UpdateHpAction(hp);
+    }
+
+    public void GetCoin(int addCoin)
+    {
+        coin += addCoin;
+
+        if (UpdateCoinAction != null) UpdateCoinAction(coin);
     }
 
     public void OnDead()

@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] Image[] imgHps;
     [SerializeField] Sprite[] hpIcons; // 0: none | 1: have
 
+    [SerializeField] Text txtCoin;
+
+
     Player player;
 
 
@@ -16,6 +19,9 @@ public class GameManager : MonoBehaviour
         player = FindObjectOfType<Player>();
 
         player.UpdateHpAction += UpdateHpUI;
+        
+        UpdateCoinUI(player.coin);
+        player.UpdateCoinAction += UpdateCoinUI;
     }
 
     void UpdateHpUI(int hp)
@@ -25,5 +31,10 @@ public class GameManager : MonoBehaviour
             if (i < hp) imgHps[i].sprite = hpIcons[1];
             else imgHps[i].sprite = hpIcons[0];
         }
+    }
+
+    void UpdateCoinUI(int coin)
+    {
+        txtCoin.text = coin.ToString();
     }
 }
