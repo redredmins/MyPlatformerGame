@@ -122,6 +122,7 @@ public class Player : MonoBehaviour
         rigidbody.velocity = Vector2.zero;
         rigidbody.AddForce(new Vector2(1f, 5f), ForceMode2D.Impulse);
         collider.enabled = false;
+        renderer.sortingLayerName = "DeadPlayer";
         animator.SetBool("IsDead", isDead);
 
         yield return new WaitForSeconds(1.5f);
@@ -132,6 +133,7 @@ public class Player : MonoBehaviour
             isDead = false;
             transform.position = startPos;
             collider.enabled = true;
+            renderer.sortingLayerName = "Player";
             rigidbody.velocity = Vector2.zero;
             animator.SetBool("IsDead", isDead);
         }

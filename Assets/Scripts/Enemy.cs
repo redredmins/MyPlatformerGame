@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] Vector2 moveEndPos;
     [SerializeField] float speed = 1f;
     [SerializeField] float idleTime = 0.5f;
+    [SerializeField] float findTargetLength = 3f;
+
     float waitTime = 0f;
     bool isWaiting = false;
 
@@ -22,9 +24,38 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        //Ray2D ray = new Ray2D();
+        if (FindAndFollowPlayer() == false)
+        {
+            OnIdle();
+        }
+    }
 
-        OnIdle();
+    bool FindAndFollowPlayer()
+    {
+        Vector3 startRay = transform.position + new Vector3(0f, 0.3f, 0f);
+        Vector2 findDir = GetDirection() * findTargetLength;
+        Ray2D ray = new Ray2D(startRay, findDir);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, findTargetLength);
+
+        Debug.DrawRay(ray.origin, findDir, Color.red, 0.1f);
+
+        foreach (var hit in hits)
+        {
+            if (hit.collider != null)
+            {
+                Debug.Log("collider : " + hit.collider.name);
+                Player player = hit.collider.GetComponent<Player>();
+
+                if (player != null)
+                {
+                    Debug.Log("Player 찾음!");
+                    OnFollow(player.transform.position);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     void OnIdle()
@@ -48,7 +79,7 @@ public class Enemy : MonoBehaviour
     }
     void Walk()
     {
-        Vector2 dir = (renderer.flipX == true) ? Vector2.left : Vector2.right;
+        Vector2 dir = GetDirection();
         
         if (transform.position.x <= moveStartPos.x)
         {
@@ -68,6 +99,13 @@ public class Enemy : MonoBehaviour
         animator.SetBool("IsWalking", true);
     }
 
+    Vector2 GetDirection()
+    {
+        if (renderer.flipX == true)
+            return Vector2.left;
+        else
+            return Vector2.right;
+    }
 
     void OnFollow(Vector3 targetPos)
     {

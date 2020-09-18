@@ -7044,6 +7044,11 @@ PrefabInstance:
       propertyPath: idleTime
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5385356012490980340, guid: bf3b3a8e7b2ccec40b9a6417e256a65c,
+        type: 3}
+      propertyPath: findTargetLength
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8264629407629843247, guid: bf3b3a8e7b2ccec40b9a6417e256a65c,
         type: 3}
       propertyPath: m_FlipX

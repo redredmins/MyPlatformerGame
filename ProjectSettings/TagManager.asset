@@ -56,3 +56,6 @@ TagManager:
   - name: Platform
     uniqueID: 2182002273
     locked: 0
+  - name: DeadPlayer
+    uniqueID: 760105933
+    locked: 0
