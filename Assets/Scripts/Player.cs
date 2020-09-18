@@ -1,13 +1,29 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[System.Serializable]
+public class PlayerInfo : UnityEvent<int>
+{
+
+}
+
+[System.Serializable]
+public struct InventoryInfo
+{
+    public string itemName;
+    public int count;
+}
+
 public class Player : MonoBehaviour
 {
+    //public PlayerInfo CoinEvent;
+
+    //[SerializeField] InventoryInfo[] curInvens;
+
     public delegate void UpdateNumberInfoAction(int a);
-    public UpdateNumberInfoAction UpdateHpAction;
-    public UpdateNumberInfoAction UpdateCoinAction;
+    public event UpdateNumberInfoAction UpdateHpAction;
+    public event UpdateNumberInfoAction UpdateCoinAction;
 
     public int hp
     {
@@ -26,6 +42,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] Animator animator;
     [SerializeField] SpriteRenderer renderer;
+
+    CapsuleCollider2D collider;
     Rigidbody2D rigidbody;
 
     bool isDead = false;        // hp 1개 없어지는 죽음
@@ -38,6 +56,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        collider = GetComponent<CapsuleCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
 
         UpdateHp(maxHp);
@@ -102,6 +121,7 @@ public class Player : MonoBehaviour
 
         rigidbody.velocity = Vector2.zero;
         rigidbody.AddForce(new Vector2(1f, 5f), ForceMode2D.Impulse);
+        collider.enabled = false;
         animator.SetBool("IsDead", isDead);
 
         yield return new WaitForSeconds(1.5f);
@@ -111,6 +131,8 @@ public class Player : MonoBehaviour
             // 부활!
             isDead = false;
             transform.position = startPos;
+            collider.enabled = true;
+            rigidbody.velocity = Vector2.zero;
             animator.SetBool("IsDead", isDead);
         }
         else
